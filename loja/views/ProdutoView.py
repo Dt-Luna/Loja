@@ -84,13 +84,15 @@ def edit_produto_postback(request, id=None):
         categoria = request.POST.get("CategoriaFk")
         try:
             obj_produto = Produto.objects.filter(id=id).first()
+            if obj_produto is None:
+                return redirect("/produto")
             obj_produto.Produto = produto
             obj_produto.destaque = (destaque is not None)
             obj_produto.promocao = (promocao is not None)
             obj_produto.fabricante = Fabricante.objects.filter(id=fabricante).first()
             obj_produto.categoria = Categoria.objects.filter(id=categoria).first()
             if msgPromocao is not None:
-                obj_produto.msgPromomcao = msgPromocao
+                obj_produto.msgPromocao = msgPromocao
             obj_produto.save()
             print("Produto %s salvo com sucesso" % produto)
         except Exception as e:
@@ -138,7 +140,7 @@ def create_produto_view(request, id=None):
         produto = request.POST.get("Produto")
         destaque = request.POST.get("destaque")
         promocao = request.POST.get("promocao")
-        msgPromocao = request.POST.get("promocao")
+        msgPromocao = request.POST.get("msgPromocao")
         preco = request.POST.get("preco")
         image = request.POST.get("image")
         print("postback-create")
@@ -172,6 +174,7 @@ def create_produto_view(request, id=None):
                         obj_produto.image = filename
             obj_produto.save()
             print("Produto %s salvo com sucesso" % produto)
+            return redirect("/produto")
         except Exception as e:
             print("Erro inserindo produto: %s" % e)
     return render(request, template_name='produto/produto-create.html', status=200)
