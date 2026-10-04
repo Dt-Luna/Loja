@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Excluir Categoria{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container">
+        <form method="POST" action="{% url 'delete_categoria' categoria.id %}">
+            {% csrf_token %}
+            <div class="alert alert-warning">
+                Deseja realmente excluir a categoria {{ categoria.Categoria }}?
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-danger col-md-2 mt-3 mr-2"><i class="fa fa-check"></i> Confirmar</button>
+                <a href="{% url 'categoria' %}" class="btn bg-secondary col-md-2 mt-3"><i class="fa fa-rotate-left"></i> Retornar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -11,11 +11,11 @@ def list_usuario_view(request, id=None):
     status=200)
 
 def edit_usuario_view(request):
-    usuario = Usuario.objects.filter(user=request.user).first()
+    usuario = get_object_or_404(Usuario, user=request.user)
     emailUnused = True
     message = None
     if request.method == 'POST':
-        usuarioForm = UserUsuarioForm(request.POST, instance=usuario, current_user=request.user)
+        usuarioForm = UserUsuarioForm(request.POST, instance=usuario)
         userForm = UserForm(request.POST, instance=request.user)
         # Verifica se o e-mail que o usuário está tentando utilizar
         # em seu perfil já existe em outro perfil
