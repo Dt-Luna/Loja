@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Pedido confirmado{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2>Pedido confirmado</h2>
+    <div class="alert alert-success">
+        Pedido <strong>{{ pedido.codigo }}</strong> confirmado em {{ pedido.confirmado_em|date:'d/m/Y H:i' }}.
+    </div>
+
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço unitário</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.produto.Produto }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>R$ {{ item.preco_unitario }}</td>
+                <td>R$ {{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h4>Total: R$ {{ pedido.total }}</h4>
+        <a href="{% url 'home' %}" class="btn btn-primary">Continuar comprando</a>
+    </div>
+</div>
+{% endblock %}

@@ -20,6 +20,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import include
 
+from loja.views.CartView import checkout_view, favoritos_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('loja.urls.HomeUrls')),
@@ -28,4 +30,7 @@ urlpatterns = [
     path('categoria/', include('loja.urls.CategoriaUrls')),
     path('fabricante/', include('loja.urls.FabricanteUrls')),
     path('auth/', include('loja.urls.AuthUrls')),
+    path('carrinho/', include('loja.urls.CartUrls')),
+    path('checkout/', checkout_view, name='checkout'),
+    path('favoritos/', favoritos_view, name='favoritos'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

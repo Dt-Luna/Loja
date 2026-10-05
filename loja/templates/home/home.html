@@ -9,46 +9,50 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6 offset-sm-0">
-                <form action={% url 'home' %} method="GET">
+                <form action="{% url 'home' %}" method="GET">
                     <h3>Buscar produtos</h3>
                     <div class="form-row">
                         <div class="col form-group">
-
-                            <input type="text" class="form-control"
-                                name="produto"
-                                placeholder="nome do produto">
+                            <input type="text" class="form-control" name="produto" placeholder="nome do produto">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col form-group mb-3">
-                            <button type="submit"
-                                class="btn btn-primary">Buscar</button>
+                            <button type="submit" class="btn btn-primary">Buscar</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="alert alert-info">Produtos encontrados [{{ produtos|length}}]</div>
+        <div class="alert alert-info">Produtos encontrados [{{ produtos|length }}]</div>
         <div class="row">
             {% for prod in produtos %}
             <div class="col-xs-9 col-md-3 col-lg-3 ">
                 <div class="card mb-4">
-                    <div class="image-circle" style="background-image:
-url('/media/{{prod.image}}');"></div>
+                    <div class="image-circle" style="background-image: url('/media/{{ prod.image }}');"></div>
                     <div class="card-body">
-                        <h5 class="card-title">{{prod.Produto}}</h5>
-                        <a href={% url 'home' %}
-                            class="btn btn-primary btn-card">
-                            <i class="fa fa-search"></i> Ver
-                        </a>
-                        <button class="btn btn-warning btn-card">
-                            <i class="fa fa-heart"></i> Favoritar</button>
+                        <h5 class="card-title">{{ prod.Produto }}</h5>
+                        <p class="card-text">R$ {{ prod.preco }}</p>
+                        <div class="d-flex justify-content-between">
+                            <form method="post" action="{% url 'add_to_cart' prod.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-card"><i class="fa fa-shopping-cart"></i> Comprar</button>
+                            </form>
+                            <form method="post" action="{% url 'toggle_favorito' prod.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn {% if prod.id in favoritos_ids %}btn-danger{% else %}btn-warning{% endif %} btn-card">
+                                    <i class="fa {% if prod.id in favoritos_ids %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
+                                    {% if prod.id in favoritos_ids %}Favoritado{% else %}Favoritar{% endif %}
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-    </div></div>
+    </div>
+</div>
 {% endblock %}
 {% block scripts %}
 <script src="{% static 'js/home.js' %}"></script>

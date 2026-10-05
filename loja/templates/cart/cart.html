@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Carrinho{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2>Carrinho de compras</h2>
+
+    {% if not itens %}
+        <div class="alert alert-info">Seu carrinho está vazio.</div>
+        <a href="{% url 'home' %}" class="btn btn-primary">Voltar para a loja</a>
+    {% else %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço unitário</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td>{{ item.produto.Produto }}</td>
+                    <td>R$ {{ item.preco_unitario }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td>R$ {{ item.subtotal }}</td>
+                    <td>
+                        <form method="post" action="{% url 'update_cart_item' item.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="acao" value="decrease">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">-</button>
+                        </form>
+                        <form method="post" action="{% url 'update_cart_item' item.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="acao" value="increase">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h4>Total: R$ {{ cart.total }}</h4>
+            <a href="{% url 'checkout' %}" class="btn btn-success">Confirmar compra</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

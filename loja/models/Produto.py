@@ -1,8 +1,9 @@
 from django.db import models
+
 from .Fabricante import Fabricante
 from .Categoria import Categoria
 
-from loja.models import *
+
 class Produto(models.Model):
     Produto = models.CharField(null=False, max_length=100)
     destaque = models.BooleanField(default=True)

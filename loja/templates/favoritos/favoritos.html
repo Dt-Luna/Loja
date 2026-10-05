@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Favoritos{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2>Produtos favoritos</h2>
+
+    {% if not favoritos %}
+        <div class="alert alert-info">Você ainda não adicionou nenhum produto aos favoritos.</div>
+    {% else %}
+        <div class="row">
+            {% for favorito in favoritos %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ favorito.produto.Produto }}</h5>
+                        <p class="card-text">R$ {{ favorito.produto.preco }}</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'home' %}" class="btn btn-primary">Ver loja</a>
+                            <form method="post" action="{% url 'toggle_favorito' favorito.produto.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger">Remover</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Confirmar compra{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2>Confirmar compra</h2>
+
+    {% if empty %}
+        <div class="alert alert-warning">Seu carrinho está vazio. Adicione produtos antes de confirmar a compra.</div>
+        <a href="{% url 'home' %}" class="btn btn-primary">Voltar para a loja</a>
+    {% else %}
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço unitário</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in itens %}
+                <tr>
+                    <td>{{ item.produto.Produto }}</td>
+                    <td>{{ item.quantidade }}</td>
+                    <td>R$ {{ item.preco_unitario }}</td>
+                    <td>R$ {{ item.subtotal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h4>Total da compra: R$ {{ cart.total }}</h4>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Confirmar pedido</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
