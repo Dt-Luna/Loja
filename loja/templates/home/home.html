@@ -34,6 +34,9 @@
                         <h5 class="card-title">{{ prod.Produto }}</h5>
                         <p class="card-text">R$ {{ prod.preco }}</p>
                         <div class="d-flex justify-content-between">
+                            <a href="{% url 'details_produto' prod.id %}" class="btn btn-primary btn-card">
+                                <i class="fa fa-search"></i> Ver
+                            </a>
                             <form method="post" action="{% url 'add_to_cart' prod.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-success btn-card"><i class="fa fa-shopping-cart"></i> Comprar</button>
